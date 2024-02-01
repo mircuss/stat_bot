@@ -9,7 +9,9 @@ buyer_router = Router()
 @buyer_router.callback_query(F.data == "delete_buyer")
 async def choise_buyer_filter_to_delete(call: CallbackQuery, repo: Repo):
     buyer_filters = await repo.get_all_buyer_filters()
-    keyboard = filters_keyboard(prefix="delete-buyer", filters=buyer_filters)
+    keyboard = filters_keyboard(prefix="delete-buyer",
+                                filters=buyer_filters,
+                                current=0)
     await call.message.edit_text(text="Выберите какой фильтр удалить",
                                  reply_markup=keyboard)
 
@@ -20,7 +22,8 @@ async def delete_buyer(call: CallbackQuery, repo: Repo):
     await repo.delet_buyer_filter(filter_id=buyer_id)
     buyer_filters = await repo.get_all_buyer_filters()
     keyboard = filters_keyboard(prefix="delete-buyer",
-                                filters=buyer_filters)
+                                filters=buyer_filters,
+                                current=0)
     await call.message.answer(text="Фильтр успешно удалён",
                               reply_markup=keyboard)
     await call.answer()

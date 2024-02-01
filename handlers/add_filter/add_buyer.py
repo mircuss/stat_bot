@@ -22,7 +22,7 @@ async def get_buyername(call: CallbackQuery, state: FSMContext):
 async def add_buyer(message: Message, repo: Repo, state: FSMContext):
     filter = name = message.text
     if len(name) > 20:
-        name = f"{filter[:16]}..."
+        name = f"{filter[:20]}"
     await repo.add_buyer(name=name, filter=filter)
     await message.answer(text="Фильтр баера добавлено",
                          reply_markup=main_keyboard)

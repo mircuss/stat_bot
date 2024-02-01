@@ -23,7 +23,7 @@ async def get_geoname(call: CallbackQuery, state: FSMContext):
 async def add_geo(message: Message, repo: Repo, state: FSMContext):
     filter = name = message.text
     if len(name) > 20:
-        name = f"{filter[:16]}..."
+        name = f"{filter[:20]}"
     await repo.add_geo(name=name, filter=filter)
     await message.answer(text="Фильтр гео добавлено",
                          reply_markup=main_keyboard)

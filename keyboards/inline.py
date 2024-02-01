@@ -1,5 +1,4 @@
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
-from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 
 def generate_filters_keyboard(prefix: str):
@@ -22,16 +21,24 @@ def generate_filters_keyboard(prefix: str):
 
 back_button = InlineKeyboardMarkup(inline_keyboard=[
     [
-        InlineKeyboardButton(text="Назад⬅️", callback_data="back")
+        InlineKeyboardButton(text="Назад⬅️", callback_data="back_button")
     ]
 ])
 
 
-def filters_keyboard(prefix: str, filters: list):
-    keyboard = InlineKeyboardBuilder()
-    for filter in filters:
-        keyboard.add(
+def filters_keyboard(prefix: str, filters: list, current):
+    keyboard = []
+    for filter in filters[current:current+8]:
+        keyboard.append([
             InlineKeyboardButton(text=filter.name,
                                  callback_data=f"{prefix}_{filter.id}")
-        )
-    return keyboard.as_markup()
+        ])
+    keyboard.append([InlineKeyboardButton(
+                        text="⬅️",
+                        callback_data=f"{prefix}_back_{current}"),
+                     InlineKeyboardButton(
+                        text="➡️",
+                        callback_data=f"{prefix}_next_{current}")])
+    keyboard.append([InlineKeyboardButton(text="В меню",
+                                          callback_data="back_button")])
+    return InlineKeyboardMarkup(inline_keyboard=keyboard)

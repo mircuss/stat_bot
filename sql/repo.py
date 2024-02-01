@@ -29,14 +29,32 @@ class Repo:
     async def delet_geo_filter(self, filter_id: int):
         stmt = delete(GeoFilter).where(GeoFilter.id == filter_id)
         await self.session.execute(stmt)
+        await self.session.commit()
 
     async def delet_buyer_filter(self, filter_id: int):
         stmt = delete(BuyerFilter).where(BuyerFilter.id == filter_id)
         await self.session.execute(stmt)
+        await self.session.commit()
 
     async def delet_project_filter(self, filter_id: int):
         stmt = delete(ProjectFilter).where(ProjectFilter.id == filter_id)
         await self.session.execute(stmt)
+        await self.session.commit()
+
+    async def get_geo_filter(self, filter_id: int) -> GeoFilter:
+        stmt = select(GeoFilter).where(GeoFilter.id == filter_id)
+        result = await self.session.execute(stmt)
+        return result.scalar()
+
+    async def get_buyer_filter(self, filter_id: int) -> BuyerFilter:
+        stmt = select(BuyerFilter).where(BuyerFilter.id == filter_id)
+        result = await self.session.execute(stmt)
+        return result.scalar()
+
+    async def get_project_filter(self, filter_id: int) -> ProjectFilter:
+        stmt = select(ProjectFilter).where(ProjectFilter.id == filter_id)
+        result = await self.session.execute(stmt)
+        return result.scalar()
 
     async def get_all_geo_filters(self) -> List[GeoFilter]:
         stmt = select(GeoFilter)

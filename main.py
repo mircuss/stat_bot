@@ -1,6 +1,7 @@
 import asyncio
 from aiogram import Bot, Dispatcher
 from handlers.basic import basic_router
+from handlers.stats import stat_filter_router
 from handlers.add_filter import add_filters_router
 from handlers.delete_filter import delete_filter_router
 from middlewares.db_middleware import DataBaseMiddelware
@@ -16,6 +17,7 @@ async def main():
     dp = Dispatcher()
     dp.update.outer_middleware(DataBaseMiddelware(session_factory))
     dp.include_router(basic_router)
+    dp.include_router(stat_filter_router)
     dp.include_router(add_filters_router)
     dp.include_router(delete_filter_router)
     await dp.start_polling(bot)
