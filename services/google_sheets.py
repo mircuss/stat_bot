@@ -44,7 +44,7 @@ class GoogleSheets:
                             url=row[8]) for row in data]
         return companys
 
-    async def filter_geo(self, filter: str, date: str | None):
+    async def filter(self, filter: str, date: str | None):
         companys = self.get_data(date=date)
         if not companys:
             return None
@@ -56,32 +56,6 @@ class GoogleSheets:
                 sub += company.sub_count
         if sub == 0:
             return [spend, sub, 0]
-        return [spend, sub, spend/sub]
-
-    async def filter_project(self, filter: str, date: str | None):
-        companys = self.get_data(date=date)
-        if not companys:
-            return None
-        spend = 0
-        sub = 0
-        for company in companys:
-            if filter in company.name:
-                spend += company.spend
-                sub += company.sub_count
-        if sub == 0:
-            return [spend, sub, 0]
-        return [spend, sub, spend/sub]
-
-    async def filter_buyer(self, filter: str, date: str | None):
-        companys = self.get_data(date=date)
-        if not companys:
-            return None
-        spend = 0
-        sub = 0
-        for company in companys:
-            if filter in company.name:
-                spend += company.spend
-                sub += company.sub_count
-        if sub == 0:
-            return [spend, sub, 0]
-        return [spend, sub, spend/sub]
+        sub_price = str(spend/sub).split(".")
+        sub_price = sub_price[0] + "." + sub_price[1][0:2]
+        return [spend, sub, sub_price]
